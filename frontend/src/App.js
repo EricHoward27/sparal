@@ -1,14 +1,18 @@
 // import custom components
 import Header from './components/Header'
 import Footer from './components/Footer'
+// import react-bootstrap
+import { Container } from 'react-bootstrap'
 
 function App() {
   return (
     <>
     <Header />
-     <main>
-       <h1>Welcome to Sparal</h1>
-     </main>
+    <main className='py-3'>
+      <Container>
+      <h1>Welcome to Sparal</h1>
+      </Container>
+    </main>
      <Footer />
     </>
   );
