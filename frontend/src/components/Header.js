@@ -8,14 +8,14 @@ const Header = () => {
         <Navbar.Brand href="/">Sparal</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
+          <Nav className="ms-auto">
             <Nav.Link href="/cart"><i className="fa fa-shopping-cart"></i>Cart</Nav.Link>
             <Nav.Link href="/login"><i className="fa fa-user"></i>Sign In</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
-  </Navbar>
-  </header>
+    </Navbar>
+    </header>
   )
 }
 export default Header
