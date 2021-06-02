@@ -13,7 +13,7 @@ const ProductScreen = ({ match }) => {
       setProducts(data)
     }
     fetchProducts()
-  }, [])
+  }, [match])
   return (
     <section className="py-5">
     <Link className='btn btn-dark my-3' to='/'> Go Back</Link>
