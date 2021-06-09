@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 import { ListGroup, Col, Row } from 'react-bootstrap'
 import Rating from '../components/Rating'
+import { listProductDetail } from '../actions/productActions'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const ProductScreen = ({ match }) => {
-  const [product, setProducts] = useState([])
+  const dispatch = useDispatch()
+
+  const productDetail = useSelector(state => state.productDetail)
+  const { loading, error, product } = productDetail
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get(`/api/products/${match.params.id}`)
-      setProducts(data)
-    }
-    fetchProducts()
-  }, [match])
+    dispatch(listProductDetail(match.params.id))
+  }, [dispatch, match])
+  
   return (
     <section className="py-5">
     <Link className='btn btn-dark my-3' to='/'> Go Back</Link>
-        <div className="container px-4 px-lg-5 my-5">
+    {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : <div className="container px-4 px-lg-5 my-5">
             <div className="row gx-4 gx-lg-5 align-items-center">
                 <div className="col-md-6"><img className="card-img-top mb-5 mb-md-0" src={product.image} alt="..." /></div>
                 <div className="col-md-6">
@@ -47,7 +50,8 @@ const ProductScreen = ({ match }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> }
+        
   </section>
   )
 }
