@@ -15,14 +15,18 @@ const HomeScreen = () => {
 
   // use to fire off the state 
   useEffect(() => {
-    dispatch(listProducts())
+    // fetch all products only once and handle infinite loops if there's no product to list
+    if (!products.length && !error) {
+      dispatch(listProducts())
+    }
     
-  }, [dispatch])
+  }, [dispatch, products.length, error])
 
   return (
     <div>
       <h1>Lastest Products</h1>
-      {loading ? <Loaders /> : error ? <Message variant='danger'>{error}</Message> : <Row>
+      {loading ? <Loaders /> : error ? <Message variant='danger'>{error}</Message> : 
+      <Row>
           {products.map(product => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
