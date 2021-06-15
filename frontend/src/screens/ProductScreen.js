@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { ListGroup, Col, Row } from 'react-bootstrap'
+import { ListGroup, Col, Row, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { listProductDetail } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ history, match }) => {
+  const [ qty, setQty ] = useState(0)
+
   const dispatch = useDispatch()
 
   const productDetail = useSelector(state => state.productDetail)
@@ -17,6 +19,10 @@ const ProductScreen = ({ match }) => {
     dispatch(listProductDetail(match.params.id))
   }, [dispatch, match])
   
+  const addToCartHandler = () => {
+    history.push(`/cart/${match.params.id}?qty=${qty}`)
+  }
+
   return (
     <section className="py-5">
     <Link className='btn btn-dark my-3' to='/'> Go Back</Link>
@@ -42,8 +48,22 @@ const ProductScreen = ({ match }) => {
                       </Row>
                     </ListGroup.Item>
                     <div className="d-flex">
-                        <input className="form-control text-center me-3" id="inputQuantity" type="num" value="1" style={ { maxWidth: '3rem' } } />
-                        <button className="btn btn-outline-dark flex-shrink-0" type="button" disabled={product.countInStock === 0}>
+                      {product.countInStock > 0 && (
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Qty</Col>
+                            <Col>
+                              <Form.Control as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
+                                {[...Array(product.countInStock).keys()].map((x) => (
+                                  <option key={x + 1} value={x + 1}>{x + 1}</option>
+                                ))}
+                              </Form.Control>
+                            </Col>
+                          </Row>
+                        </ListGroup.Item>
+                  
+                      )}
+                        <button className="btn btn-outline-dark flex-shrink-0" type="button" disabled={product.countInStock === 0} onClick={addToCartHandler}>
                             <i className="bi-cart-fill me-1"></i>
                             Add to cart
                         </button>
