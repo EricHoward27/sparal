@@ -4,6 +4,7 @@ import colors from 'colors'
 import connectDb from './config/db.js'
 // custom routes
 import productRoutes from './routes/product_routes.js'
+import userRoutes from './routes/user_routes.js'
 // custom middleware
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
@@ -12,12 +13,15 @@ dotenv.config()
 connectDb()
 
 const app = express()
+// body parser
+app.use(express.json())
 
 app.get('/', (req, res ) => {
   res.send('API is running...')
 })
 
 app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 // error handler for 404
 app.use(notFound)
